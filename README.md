@@ -1,2 +1,2 @@
 # GithubActions
-In this repo we build the ci using github actions and use argocd for cd. and deploy our code in openshift sandbox environment.
+In this repository we build the CI using github actions and use argocd for CD, and deploy our code in openshift sandbox environment.
