@@ -3,6 +3,7 @@ kind: Service
 
 metadata:
   name: patient-service
+  namespace: organicgreentea-dev
 
 spec:
   selector:
