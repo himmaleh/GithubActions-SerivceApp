@@ -22,7 +22,7 @@ spec:
       containers:
         - name: application-service
 
-          image: ghcr.io/himmaleh/application-service
+          image: ghcr.io/himmaleh/application-service:2
 
           imagePullPolicy: Always
 
