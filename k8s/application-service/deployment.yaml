@@ -2,11 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: application-service
+  namespace: organicgreentea-dev
   labels:
     app: application-service
 
 spec:
-  replicas: 1
+  replicas: 3
 
   selector:
     matchLabels:
@@ -21,7 +22,7 @@ spec:
       containers:
         - name: application-service
 
-          image: asia-south1-docker.pkg.dev/project-e85d8801-bd70-4ddd-8bc/microservices-repo/application-service:4
+          image: ghcr.io/himmaleh/application-service
 
           imagePullPolicy: Always
 
