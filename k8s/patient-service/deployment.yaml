@@ -21,7 +21,7 @@ spec:
       containers:
         - name: patient-service
 
-          image: ghcr.io/emailvpreferences/application-service/patient-service
+          image: ghcr.io/himmaleh/patient-service:1
 
           imagePullPolicy: Always
 
