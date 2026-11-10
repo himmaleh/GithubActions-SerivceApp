@@ -9,7 +9,7 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/Sanjaymavi/HCL-Interview-GithubActions.git
+    repoURL: https://github.com/himmaleh/GithubActions-SerivceApp.git
     targetRevision: main
     path: k8s/application-service
 
