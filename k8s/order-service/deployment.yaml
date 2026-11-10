@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: order-service
-          image: ghcr.io/emailvpreferences/order-service
+          image: ghcr.io/himmaleh/order-service:1
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
