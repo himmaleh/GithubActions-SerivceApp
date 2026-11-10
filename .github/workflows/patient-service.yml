@@ -9,13 +9,7 @@ on:
 
 permissions:
   contents: write
-  id-token: write
-
-env:
-  PROJECT_ID: project-e85d8801-bd70-4ddd-8bc
-  REGION: asia-south1
-  REPOSITORY: microservices-repo
-  IMAGE_NAME: patient-service
+  packages: write
 
 concurrency:
   group: ${{ github.workflow }}
@@ -29,42 +23,32 @@ jobs:
 
     steps:
 
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Authenticate GCP
-        uses: google-github-actions/auth@v2
-        with:
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-
-      - uses: google-github-actions/setup-gcloud@v2
-
-      - name: Install Dependencies
+      - name: Login to GHCR
         run: |
-          cd patient-service
-          npm install
-
-      - name: Configure Docker
-        run: |
-          gcloud auth configure-docker asia-south1-docker.pkg.dev --quiet
+          echo "${{ github.token }}" | docker login ghcr.io \
+            -u "${{ github.actor }}" \
+            --password-stdin
 
       - name: Build Docker Image
         run: |
           docker build \
-          -t asia-south1-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${IMAGE_NAME}:${{ github.run_number }} \
-          -f patient-service/Dockerfile \
-          patient-service
+            -t ghcr.io/${{ github.repository_owner }}/patient-service:${{ github.run_number }} \
+            -f patient-service/Dockerfile \
+            patient-service
 
       - name: Push Docker Image
         run: |
           docker push \
-          asia-south1-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${IMAGE_NAME}:${{ github.run_number }}
+            ghcr.io/${{ github.repository_owner }}/patient-service:${{ github.run_number }}
 
       - name: Update Manifest
         run: |
           sed -i \
-          "s#image:.*#image: asia-south1-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${IMAGE_NAME}:${{ github.run_number }}#" \
-          k8s/patient-service/deployment.yaml
+            "s#image:.*#image: ghcr.io/${{ github.repository_owner }}/patient-service:${{ github.run_number }}#" \
+            k8s/patient-service/deployment.yaml
 
       - name: Commit Manifest
         run: |
